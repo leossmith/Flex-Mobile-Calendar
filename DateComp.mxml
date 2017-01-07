@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 creationComplete="initView(event)">
+	
+	<fx:Metadata>
+		[Event(name="daySelectedEvent", type="events.RefreshEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.graphics.SolidColor;
+			import mx.graphics.SolidColorStroke;
+			
+			import classes.colors;
+			
+			import events.RefreshEvent;
+			
+			public var year:int;
+			public var month:int;
+			[Bindable]
+			public var day:String;
+			[Bindable]
+			public var style:String;
+			public var isCurrent:Boolean;
+			public var starts:Boolean;
+			public var ends:Boolean;
+			[Bindable]
+			private var radius:int;
+			
+			protected function initView(event:FlexEvent):void {
+				addEventListener(MouseEvent.CLICK, dateSelected);
+				var so:SolidColor = new SolidColor;
+				var cur:SolidColor = new SolidColor;
+				if (isCurrent) {
+					cur.color = 0xffffff;
+					el.fill = cur;
+					el.visible = true;
+				}
+				var stro:SolidColorStroke = new SolidColorStroke;
+				stro.weight = 2;
+				if ((FlexGlobals.topLevelApplication.applicationDPI >= 200) && (FlexGlobals.topLevelApplication.applicationDPI < 280)) {
+					stro.weight = 3;
+				}
+				else if ((FlexGlobals.topLevelApplication.applicationDPI >= 280) && (FlexGlobals.topLevelApplication.applicationDPI < 380)) {
+					stro.weight = 4;
+				}	
+				else if ((FlexGlobals.topLevelApplication.applicationDPI >= 380) && (FlexGlobals.topLevelApplication.applicationDPI < 520)) {
+					stro.weight = 5;
+				}
+				else if (FlexGlobals.topLevelApplication.applicationDPI > 520) {
+					stro.weight = 6;
+				}
+				var stro1:SolidColorStroke = new SolidColorStroke;
+				stro1.weight=stro.weight;
+				if(starts) {
+					ellipse.visible = true;
+					el.stroke = stro;
+					el.visible = true;
+					stro.color = 0xffffff;
+					so.color = classes.colors.BOOKING_UP;
+					stro1.color = classes.colors.BOOKING_UP;
+					ellipse.fill = so;
+					ellipse.stroke = stro1;
+					/*ellipse1.fill = so;
+					so.color = 0xe96153;*/
+				} else {
+					ellipse.visible = false;
+				}
+				var end:SolidColor = new SolidColor;
+				var endStroke:SolidColorStroke = new SolidColorStroke;
+				if(ends){
+					stro.color = 0xffffff;
+					el.stroke = stro;
+					el.visible = true;
+					endStroke.color = 0xe96153;
+					end.color = 0xe96153;
+					ellipse1.fill = end;
+					ellipse1.stroke = endStroke;
+					ellipse1.visible = true;
+				} else {
+					ellipse1.visible = false;
+				}
+			}
+			
+			protected function dateSelected(e:MouseEvent):void {
+				dispatchEvent(new RefreshEvent('daySelectedEvent', {year:year, month:month, day:day})); 
+			}
+			
+		]]>
+	</fx:Script>	
+	
+	<s:VGroup width="100%" height="100%" horizontalAlign="center">
+		<s:Group id="datePart">
+			<s:Ellipse id="el" width="{this.width * 0.4}" height="{this.height * 0.4}" visible="false" verticalCenter="0" horizontalCenter="0"/>
+			<s:Label text="{day}"  styleName="{style}" verticalCenter="1.5" horizontalCenter="-2" id="label1" fontWeight="normal"/>
+		</s:Group>
+		<s:HGroup verticalAlign="middle" horizontalCenter="0" id="ellPart" >
+			<s:Ellipse id="ellipse" width="{this.width * 0.12}" height="{this.height * 0.12}" visible="false"  />
+			<s:Spacer width="10%"/>
+			<s:Ellipse id="ellipse1" width="{this.width * 0.12}" height="{this.height * 0.12}" visible="false" />
+		</s:HGroup>
+	</s:VGroup>  
+</s:Group>
