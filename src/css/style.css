@@ -1,0 +1,169 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+/* Roboto Regular Font */
+@font-face {
+	src: url("./css/fonts/OpenSans-Regular.otf");
+	fontFamily: "OpenSans-RegularCFF";
+	fontWeight:normal;
+	embedAsCFF: true;
+	advanced-anti-aliasing: true;
+}
+@font-face {
+	src: url("./css/fonts/OpenSans-Regular.otf");
+	fontFamily: "OpenSans-Regular";
+	fontWeight:normal;
+	embedAsCFF: false;
+	advanced-anti-aliasing: true;
+}
+
+@font-face {
+	src: url("./css/fonts/OpenSans-SemiBold.ttf");
+	fontFamily: "OpenSans-Semibold";
+	fontWeight: normal;
+	embedAsCFF: false;
+	advanced-anti-aliasing: true;
+}
+
+@font-face {
+	src: url("./css/fonts/OpenSans-SemiBold.ttf");
+	fontFamily: "OS-SBCFF";
+	fontWeight: normal;
+	embedAsCFF: true;
+	advanced-anti-aliasing: true;
+}
+
+global {
+	modalTransparencyBlur: 0;
+	modalTransparency: .5;
+	modalTransparencyColor: #000000;
+}
+
+
+s|ActionBar
+{
+	
+	skinClass: ClassReference("spark.skins.android5.ActionBarSkin");
+	paddingBottom: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingTop: 0;
+	dropshadowVisible: true;
+	titleAlign: center;
+	textShadowAlpha: 0;
+}
+
+s|ActionBar #titleDisplay
+{
+	fontWeight: normal;
+	fontFamily: OpenSans-Semibold;
+	color: #ffffff;
+}
+
+s|ActionBar s|ButtonBase
+{
+	color: #333333;
+	fontFamily: OpenSans-Regular;
+	fontWeight: bold;
+}
+
+s|ActionBar s|Group#actionGroup s|Button
+{
+	skinClass: ClassReference("spark.skins.android5.TransparentActionButtonSkin");
+	chromeColor: #009688;
+	downColor: #ffffff;
+	downAlpha: 0.5;
+	color: #FFFFFF;
+}
+
+s|ActionBar s|Group#navigationGroup s|Button
+{
+	skinClass: ClassReference("spark.skins.android5.TransparentNavigationButtonSkin");
+	chromeColor: #009688;
+	downColor: #ffffff;
+	downAlpha: 0.5;
+	color: #FFFFFF;
+}
+
+
+.customKeyboardTextInput
+{
+	skinClass: ClassReference("spark.skins.android5.ScrollingStageTextInputSkin");
+	contentBackgroundAlpha: 0;
+	focusColor: #009688;
+	borderColor: #4e4e4e;
+	contentBackgroundColor: #DEDEDD;
+	contentBackgroundBorder: "flat";
+	fontFamily: OpenSans-Regular;
+	selectionHighlighting: "never";
+	focusEnabled:"false";
+	focusThickness: 0;
+	
+} 
+
+s|Label {
+	fontSize:38; 
+	color:#006064;
+	fontFamily:OpenSans-RegularCFF;
+}
+
+.calendarButton
+{
+	embedFonts: true;
+	fontFamily: OpenSans-Semibold;
+	fontSize: 40;
+	fontWeight:normal;
+	contentBackgroundBorder: "flat";
+	skinClass: ClassReference("spark.skins.android5.ButtonSkin");
+	chromeColor: #009688;
+	downColor: #b9b8b8;
+	downAlpha: 0.1;
+	inkColor: #c6e0fb;
+}
+
+.calendarThisMonthDay {
+	color: #000000;
+	textAlign: center;
+	fontFamily: OpenSans-RegularCFF;
+}
+
+.calendarSelectedDay {
+	color: #FFFFFF;
+	textAlign: center;
+	fontFamily: OpenSans-RegularCFF;
+}
+
+.calendarMonthComponent {
+	color: #000000;
+	textAlign: center;
+	fontFamily: OpenSans-RegularCFF;
+}
+
+.calendarThisMonthDayCurrent {
+	textAlign: center;
+	fontFamily: OS-SBCFF;
+}
+
+.sideColumnYear {
+	textAlign: center;
+	fontFamily: OpenSans-RegularCFF;
+	color: #EEF0EB;
+	fontSize: 50;
+}
+
+.calendarDayComponent{
+	color: #9b9b9b;
+	textAlign: center;
+	fontFamily: OpenSans-RegularCFF;
+}
+
+
+.sideColumnDate {
+	textAlign: center;
+	fontFamily: OS-SBCFF;
+	color: #FFFFFF;
+	fontSize: 85;
+}
+
+
+

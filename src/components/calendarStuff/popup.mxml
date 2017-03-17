@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnablePopUpContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+						   xmlns:s="library://ns.adobe.com/flex/spark"
+						   open="initView()">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			
+			import spark.components.Scroller;
+			[Embed (source="assets/delete_icon.png")]
+			private var DeleteImg:Class;
+			
+			[Embed (source="assets/internet_icon.png")]
+			private var InternetImg:Class;
+			
+			public var isDelete:Boolean;
+			public var isDescription:Boolean;
+			[Bindable]
+			public var title:String;
+			[Bindable]
+			public var description:String;
+			[Bindable]
+			public var popColor:uint;
+			private var descriptionSr:Scroller = new Scroller;
+			
+			public function initView():void {
+				if (isDelete) {
+					descriptionGroup.height = descriptionGroup.height = 0;
+					if (contains(descriptionSr)) {
+						removeElement(descriptionSr);
+					}
+					imageGroup.height = this.height  * .5;
+					deleteGroup.height = this.height  * .3;
+					descriptionGroup.visible = false;
+					titleDescriptionLabel.visible = false;
+					deleteGroup.visible = true;
+					mainImage.visible = true;
+					
+					mainImage.source = DeleteImg;
+					titleLabel.text = resourceManager.getString('resources','POPUP_WAIT');
+					deleteDescriptionLabel.text = resourceManager.getString('resources','POPUP_DELETE');
+					
+					cancelBtn.width = this.width * .5;
+					confirmBtn.width = this.width * .5;
+					confirmBtn.visible = true;
+				}
+				else if (isDescription) {
+					deleteGroup.height = 0;
+					descriptionSr.viewport = descriptionGroup;
+					descriptionSr.width = this.width;
+					descriptionSr.height = this.height * .75;
+					descriptionSr.top = FlexGlobals.topLevelApplication.height * .1;
+					descriptionSr.bottom = FlexGlobals.topLevelApplication.height * .075;
+					descriptionSr.setStyle("horizontalScrollPolicy", "off");
+					descriptionSr.setStyle("verticalScrollPolicy", "on");
+					
+					if (!contains(descriptionSr)) {
+						addElement(descriptionSr);
+					}
+					descriptionGroup.height = this.height  * .75;
+					imageGroup.height = FlexGlobals.topLevelApplication.height  * .1;
+					titleDescriptionLabel.visible = true;
+					descriptionGroup.visible = true;
+					deleteGroup.visible = false;
+					mainImage.visible = false;
+				
+					titleDescriptionLabel.text = resourceManager.getString('resources','NEWS_HOSPITAL_IATREIO');
+					descriptionLabel.text = description;
+					
+					cancelBtn.width = this.width;
+					confirmBtn.width = 0;
+					confirmBtn.visible = false;
+				}
+				else {
+					descriptionGroup.height = descriptionGroup.height = 0;
+					if (contains(descriptionSr)) {
+						removeElement(descriptionSr);
+					}
+					descriptionGroup.visible = false;
+					titleDescriptionLabel.visible = false;
+					imageGroup.height = this.height  * .5;
+					deleteGroup.height = this.height  * .3;
+					deleteGroup.visible = true;
+					mainImage.visible = true;
+					
+					mainImage.source = DeleteImg;
+					titleLabel.text = resourceManager.getString('resources','POPUP_INTERNET_TITLE');
+					deleteDescriptionLabel.text = resourceManager.getString('resources','POPUP_INTERNET_DESCRIPTION');
+					
+					cancelBtn.width = this.width;
+					confirmBtn.width = 0;
+					confirmBtn.visible = false;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Group left="0" right="0" top="0" bottom="0">
+		<s:Rect width="100%" height="100%" radiusX="3">
+			<s:fill><s:SolidColor color="#ffffff"/></s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.2" angle="90" distance="2" inner="false"/>
+			</s:filters>
+		</s:Rect>
+		
+		<s:VGroup width="100%" height="100%">
+			<s:Group id="imageGroup" width="100%">
+				<s:Rect width="100%" height="100%">
+					<s:fill><s:SolidColor color="{popColor}"/></s:fill>
+				</s:Rect>
+				<s:Image id="mainImage" width="50%" height="60%" horizontalCenter="0" verticalCenter="0" smoothingQuality="high" smooth="true"/>	
+				<s:Label id="titleDescriptionLabel" width="50%" height="50%" styleName="popupTitle" verticalAlign="middle" verticalCenter="0" horizontalCenter="0"/>
+			</s:Group>
+			
+			<s:VGroup id="deleteGroup" width="100%"  gap="{this.height * .05}" horizontalAlign="center" verticalAlign="middle">
+				<s:Label id="titleLabel" width="50%" height="50%" styleName="popupTitle" verticalAlign="middle"/>
+				<s:Label id="deleteDescriptionLabel" width="85%" styleName="popupDescription"/>
+			</s:VGroup>
+			<s:VGroup id="descriptionGroup" width="100%"  paddingTop="{this.height * .05}" paddingBottom="{this.height * .05}" horizontalAlign="center">
+				<s:Label id="descriptionLabel" width="85%" styleName="popupDescription"/>
+			</s:VGroup>
+		</s:VGroup>
+		
+		<s:HGroup width="100%" height="{FlexGlobals.topLevelApplication.height * .075}" gap="0" bottom="0">
+			<s:Group id="cancelBtn" width="50%" height="100%" bottom="0" click="{this.close(true,'no')}">
+				<s:Rect width="100%" height="100%">
+					<s:fill>
+						<s:SolidColor color="0xe75945"/>
+					</s:fill>
+				</s:Rect>
+				<s:Image height="50%" smooth="true" smoothingQuality="high" scaleMode="letterbox" horizontalCenter="0" verticalCenter="0">
+					<s:source>
+						<s:MultiDPIBitmapSource source160dpi="@Embed('assets/buttons/lowRes/cancel.png')"
+												source240dpi="@Embed('assets/buttons/medRes/cancel.png')"
+												source320dpi="@Embed('assets/buttons/highRes/cancel.png')"
+												source480dpi="@Embed('assets/buttons/hdRes/cancel.png')"/>
+					</s:source>
+				</s:Image>
+			</s:Group>
+			<s:Group id="confirmBtn" width="50%" height="100%" bottom="0" click="this.close(true,'yes')">
+				<s:Rect width="100%" height="100%">
+					<s:fill>
+						<s:SolidColor color="{popColor}"/>
+					</s:fill>
+				</s:Rect>
+				<s:Image height="50%" smooth="true" smoothingQuality="high" scaleMode="letterbox" horizontalCenter="0" verticalCenter="0">
+					<s:source>
+						<s:MultiDPIBitmapSource source160dpi="@Embed('assets/buttons/lowRes/ok.png')"
+												source240dpi="@Embed('assets/buttons/medRes/ok.png')"
+												source320dpi="@Embed('assets/buttons/highRes/ok.png')"
+												source480dpi="@Embed('assets/buttons/hdRes/ok.png')"/>
+					</s:source>
+				</s:Image>
+			</s:Group>
+		</s:HGroup>
+		
+	</s:Group>
+</s:SkinnablePopUpContainer>

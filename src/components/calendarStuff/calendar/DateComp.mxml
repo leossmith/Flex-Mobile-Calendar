@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 creationComplete="initView(event)">
+	
+	<fx:Metadata>
+		[Event(name="daySelectedEvent", type="events.RefreshEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.graphics.SolidColor;
+			import mx.graphics.SolidColorStroke;
+			
+			
+			import events.RefreshEvent;
+			
+			public var year:int;
+			public var month:int;
+			[Bindable]
+			public var day:String;
+			[Bindable]
+			public var style:String;
+			public var isCurrent:Boolean;
+			[Bindable]
+			private var radius:int;
+			
+			protected function initView(event:FlexEvent):void {
+				addEventListener(MouseEvent.CLICK, dateSelected);
+				var so:SolidColor = new SolidColor;
+				var cur:SolidColor = new SolidColor;
+				/*if (isCurrent) {
+					cur.color = 0xffffff;
+					el.fill = cur;
+					el.visible = true;
+				}*/
+				var stro:SolidColorStroke = new SolidColorStroke;
+				stro.weight = 2;
+				if ((FlexGlobals.topLevelApplication.applicationDPI >= 200) && (FlexGlobals.topLevelApplication.applicationDPI < 280)) {
+					stro.weight = 3;
+				}
+				else if ((FlexGlobals.topLevelApplication.applicationDPI >= 280) && (FlexGlobals.topLevelApplication.applicationDPI < 380)) {
+					stro.weight = 4;
+				}	
+				else if ((FlexGlobals.topLevelApplication.applicationDPI >= 380) && (FlexGlobals.topLevelApplication.applicationDPI < 520)) {
+					stro.weight = 5;
+				}
+				else if (FlexGlobals.topLevelApplication.applicationDPI > 520) {
+					stro.weight = 6;
+				}
+				var stro1:SolidColorStroke = new SolidColorStroke;
+				stro1.weight=stro.weight;
+				
+			}
+			
+			protected function dateSelected(e:MouseEvent):void {
+				dispatchEvent(new RefreshEvent('daySelectedEvent', {year:year, month:month, day:day})); 
+			}
+			
+		]]>
+	</fx:Script>	
+	
+	<s:VGroup width="100%" height="100%" horizontalAlign="center">
+		<s:Group id="datePart">
+			<s:Ellipse id="el" width="{this.width * 0.6}" height="{this.height * 0.975}" visible="false" verticalCenter="0" horizontalCenter="0"/>
+			<s:Label text="{day}"  styleName="{style}" verticalCenter="1.5" horizontalCenter="-2" id="label1" fontWeight="normal"/>
+		</s:Group>
+	</s:VGroup>  
+</s:Group>

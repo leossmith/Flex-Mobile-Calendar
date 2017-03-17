@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnablePopUpContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						   xmlns:s="library://ns.adobe.com/flex/spark" initialize="skinnablepopupcontainer1_initializeHandler(event)"
+						   open="initView()" addedEffect="fadeIn" removedEffect="fadeOut" xmlns:calendar="components.calendarStuff.calendar.*"    >
+	<fx:Declarations>
+		<s:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0" duration="2000"/>
+		<s:Fade id="fadeIn" alphaFrom="0.0" alphaTo="1.0" duration="2000"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.formatters.DateFormatter;
+			
+			import mx.events.FlexEvent;
+			
+			import events.RefreshEvent;
+			[Bindable]
+			public	var minDate:Date;
+			private var selDate:Date;
+			public var top_color:Number;
+			var dtf1:DateFormatter = new DateFormatter();
+			var dtf2:DateFormatter = new DateFormatter();
+			
+			public function initView():void {
+				var currentDate:Date = new Date();
+				var currentDayStr:int = currentDate.day;
+				var currentMonth:int = currentDate.month;
+				var currentYear:int = currentDate.fullYear;
+				dtf1.formatString = "EEE,";
+				dayTxt.text = dtf1.format(currentDate) ;
+				dtf2.formatString = "MMM D";
+				dateTxt.text = dtf2.format(currentDate);
+				yearTxt.text = currentYear.toString();
+				for (var j:int = currentDate.date; j > 1; j--) {
+					currentDayStr--;
+					if (currentDayStr < 0) {
+						currentDayStr = 6;
+					}
+				}
+				calendarComp.addEventListener("dateSelectedEvent", dateSelected);
+				calendarComp.setMinimumDate(minDate);
+				calendarComp.changeCurrentNextCalendar(currentDayStr, currentMonth, currentYear);
+				calendarComp.changeMonthLabel(currentMonth,currentYear);
+				selDate=currentDate;
+			}
+			
+			protected function dateSelected(e:RefreshEvent):void {
+				selDate=new Date(e.data.year,e.data.month,e.data.day);
+				dtf1.formatString = "EEE,";
+				dayTxt.text = dtf1.format(selDate) ;
+				dtf2.formatString = "MMM D";
+				dateTxt.text = dtf2.format(selDate);
+				yearTxt.text = selDate.getFullYear().toString();
+			}
+			
+			protected function skinnablepopupcontainer1_initializeHandler(event:FlexEvent):void
+			{
+				cancelBtn.setStyle('color',top_color);
+				confirmBtn.setStyle('color',top_color);
+			
+				calendarComp.top_color =  top_color;
+				var sd:SolidColor = new SolidColor(top_color);
+				sideColumn.fill = sd;
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Group left="0" right="0" top="0" bottom="0">
+		<s:Rect width="100%" height="100%" radiusX="3">
+			<s:fill><s:SolidColor color="#FFFFFF"/></s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.2" angle="90" distance="2" inner="false"/>
+			</s:filters>
+		</s:Rect>
+		<s:HGroup width="100%" height="100%">
+			<s:Group width="25%" height="100%" left="0" right="0" top="0" bottom="0">
+				<s:Rect width="100%" height="100%" id="sideColumn" radiusX="3">
+					<s:fill><s:SolidColor color="#FFFFFF"/></s:fill>
+				</s:Rect>
+				<s:VGroup width="33%" height="100%">
+					<s:Spacer height="4%"/>
+					<s:Label id="yearTxt" paddingLeft="25" styleName="sideColumnYear"/>
+					<s:Spacer height="1%"/>
+					<s:Label id="dayTxt" paddingLeft="25" styleName="sideColumnDate"/>
+					<s:Spacer height="1%"/>
+					<s:Label id="dateTxt" paddingLeft="25" styleName="sideColumnDate"/>
+				</s:VGroup>
+			</s:Group>
+			<s:VGroup width="75%" height="100%" horizontalAlign="right">
+				<calendar:CalendarComp id="calendarComp" width="100%" height="90%" bottom="0" minimumDate="{minDate}"/>
+				<s:HGroup id="gr" height="7%" width="65%" verticalAlign="top" gap="2">
+					<s:Spacer width="38%"/>
+					<s:Button id="cancelBtn" label="CANCEL" click="this.close(true)" styleName="calendarButton" width="30%" height="100%"/>
+					<s:Button id="confirmBtn" label="OK" click="this.close(true,selDate)" styleName="calendarButton" width="30%" height="100%"/>
+					<s:Spacer width="2%"/>
+				</s:HGroup>
+				<s:Spacer height="3%"/>
+			</s:VGroup>
+		</s:HGroup>
+	</s:Group>
+</s:SkinnablePopUpContainer>

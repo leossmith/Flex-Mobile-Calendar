@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+							applicationDPI="320"
+							xmlns:s="library://ns.adobe.com/flex/spark" firstView="views.calendarPopupHomeView" xmlns:calendarStuff="components.calendarStuff.*">
+	<fx:Style source="css/style.css" />
+	<fx:Metadata>
+		[ResourceBundle("resources")]
+	</fx:Metadata> 
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			
+			[Bindable]
+			private var app:Object = FlexGlobals.topLevelApplication;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<calendarStuff:calendarPopup id="popupCalendar" x="{app.width/2-popupCalendar.width/2}" y="{app.height/2-popupCalendar.height/2}" />
+	</fx:Declarations>
+	
+</s:ViewNavigatorApplication>

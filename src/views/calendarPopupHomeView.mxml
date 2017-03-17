@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="Calendar Popup" creationComplete="view1_creationCompleteHandler(event)" backgroundColor="#B2DFDB" xmlns:calendarStuff="components.calendarStuff.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import spark.events.PopUpEvent;
+			
+			[Bindable]
+			private var app:Object = FlexGlobals.topLevelApplication;
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				navigator.actionBar.initialize();
+				navigator.actionBar.setStyle("chromeColor",'#00ACC1');
+			}
+			
+			
+			private function showDateTimePicker(event:MouseEvent):void
+			{	
+				popup.minDate = new Date();
+				popup.top_color = 0x00ACC1;
+				popup.addEventListener("close",dialog_dateSelectedHandler);
+				app.popupCalendar = popup;
+				app.popupCalendar.open(this, true);
+				
+			}
+			
+			private function dialog_dateSelectedHandler( event:PopUpEvent ):void
+			{
+				/*selectedDate = event.date;
+				rb_dateTextInput.text = dateToString(selectedDate);
+				Dialog.service.dismissDatePicker(1);*/
+				if(event.data!=null){
+					trace( "Dialog date selected: " + event.data.toDateString() + " :: " + event.data.toTimeString() );
+					var selectedDate:Date = (event.data as Date);
+					input.text = dateToString(selectedDate);
+					popup.minDate=null;
+					lbl.text = "Date selected:";
+				}
+			}
+			
+			protected function dateToString(date:Date):String
+			{
+				var day:Number = date.getDate();
+				var month:Number = date.getMonth();
+				month++;
+				var year:Number = date.getFullYear();
+				if(month < 10)
+				{
+					return year + "-0" + month + "-" + day;
+				}
+				else
+				{
+					return year + "-" + month + "-" + day;
+				}		
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<calendarStuff:calendarPopup id="popup"
+								  width="{this.width*.60}"
+								  height="{this.height*.65}"
+								  x="{app.width/2-popup.width/2}"
+								  y="{app.height/2-popup.height/2}"/>
+	</fx:Declarations>
+<s:Group top="10" bottom="10" right="10" left="10" >
+	<s:Rect width="100%" height="100%" radiusX="3">
+		<s:fill><s:SolidColor color="#ffffff" /></s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" alpha="0.2" distance="2" inner="false" />
+		</s:filters>
+	</s:Rect>
+	<s:VGroup width="100%" height="40%" top="20" bottom="20" right="20" left="20" >
+		<s:Label id="lbl" text="Select a date" fontSize="50"/>
+		<s:TextInput id="input" editable="false" prompt="tap here to select" styleName="customKeyboardTextInput" click="showDateTimePicker(event)"/>
+	</s:VGroup>
+	
+</s:Group>
+	
+</s:View>
